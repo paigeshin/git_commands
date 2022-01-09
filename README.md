@@ -15,7 +15,7 @@ A README file is used to communicate important information about a repository in
 
 ---
 
-### [README.md](http://README.md) markdown guide
+# [README.md](http://README.md) markdown guide
 
 [https://markdown-it.github.io/](https://markdown-it.github.io/)
 
