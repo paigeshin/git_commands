@@ -1,5 +1,3 @@
-# git_commands
-
 ### README**s**
 
 **README**s ****are Markdown files, ending with the .md extension.
@@ -253,7 +251,7 @@ git diff
 # Compare between commits 
 git log --oneline
 git diff ${old_commit} ${new_commit}
-git diff ${old_commit..${new_commit}
+git diff ${old_commit}..${new_commit}
 
 # git add & commit 
 git commit -am "${message}"
@@ -684,14 +682,14 @@ git merge main
 # Resolve Pull Request Merge Conflict( the changes and updates on Github )  
 git checkout ${main}
 git checkout main  
-git pull ${remmote} ${main}
+git pull ${remote} ${main}
 git pull origin main 
 git merge --no-ff ${mybranch}
 git merge --no-ff mybranch 
 git push ${remote} ${main}
 git push origin main 
 
-# Fork and Pull Request 
+# Fork and Pull Request - especailly when working with open source 
 git clone ${remote_repository}
 git remote -v # Check remote urls 
 # add url of original repository
@@ -706,7 +704,430 @@ git commit -m "${message}"
 git push origin ${main}
 # make a pull request on forked repository (from my remote repository to original repository)
 
+# Rebasing
+# When I first learned Git, I was told to avoid rebasing at all costs
+# It can really #%@* things up
+# It's not for beginners! 
+# So I avoided the `git rebase` command for YEARS!
+# It's actually very useful, as long as you know when
+# `NOT` to use it.
+# There are two main ways to use the git rebase command:
+# - as an alternative to merging
+# - as a cleanup tool 
+
+# The ${feature} branch has a bunch of merge commits.
+# If the master branch is very active,
+# my ${feature} branch's history is muddied.
+
+# Rebasing!
+# We can instead rebase the ${feature} branch onto the master branch.
+# This moves the entire feature branch so that it BEGINS at 
+# the tip of the master branch. All of the work
+# is still there, but `we have re-written history`.
+
+# Instead of using a merge commit, rebasing
+# rewrites history by `creating new commits` for
+# each of the original feature branch commits.
+git switch feature
+git rebase master # rewriting history, new history, cleans up history
+ 
+# DONT YOU DARE TRY TO REBASE WHEN YOU SHARED YOUR COMMIT WITH OTHERS!
+# When not to rebase
+# Why Rebase?
+# We get a much cleaner project history.
+# No unnecessary merge commits!
+# We end up with a linear project history. 
+# Warning!
+# `Never rebase commits that have been shared with others.`
+# If you have already pushed commits up to Github...
+# DO NOT rebase them unless you are positive 
+# no one on the team is using those commits. 
+# Seriously
+# You do not want to rewrite any git history that other people already have.
+# It's a pain to reconcile the alternate histories! 
+
+# Handling Conflicts & Rebasing
+git switch features
+git rebase master # if conflicts occurred 
+git status # rebase in progress
+git add ${file_name}
+git rebase --continue # always follow the instruction
+
+# Introducing Interactive Rebase
+# Rewriting History
+# Sometimes we want to rewrite,
+# delete, rename, or even reorder
+# commits (before sharing them)
+# We can do this using `git rebase`!
+
+# Interactuve Rebase
+# Running git rebase with the -i option will enter the
+# interactive mode, which allows us to edit commits, add
+# files, drop commits, etc. Note that we need to specify how
+# far back we want to rewrite commits.
+# Also, notice that we are not rebasing onth another branch.
+# Instead, we are rebasing a series of commits onto the 
+# HEAD they currently are based on. 
+git rebase -i HEAD~4
+
+# Demonstration of interactive rebase
+git switch -c my-feat
+git switch -i HEAD~9 # HEAD till the nine (nine commits ago) Go back to commit 
+# What NOW?
+### JUST CHANGE THE COMMAND, NOT THE CONTENT! ###
+# In out text editor, we'll see a list of commits alongside a list
+# of commands that we can choose from. Here are a couple
+# of the more commonly used commands:
+# - pick: use the commit
+# - reword: use the commit, but edit the commit message
+# - edit: use commit, but stop for amending
+# - fixup: use commit contents but meld it into previous commit
+					 and discourd the commit message => Combine Commit 
+# - drop: remove commit 
+
+# Fixing up & Squashing Commits With Interactive Rebase 
+# USE `fixup` 
+# example)
+# pick 22vd2f add top navbar 
+# fixup 23vd2f fix navbar typos
+# fixup 24vd2f fix another navbar typos
+# 23vd2f, 24vd2f will be merged into `22vd2f`
+git log --oneline
+git rebase -i HEAD~9
+
+# Dropping Commits with Interactive Rebase
+# Delete Changes and Commits Entirely 
+# example) 
+# drop 923b820 my cat made this commit => This commit will be entirely removed 
+# pick a354764 Create README.md 
+git log --oneline
+git rebase -i HEAD~~2
+
+# Edit The Most Commit Message 
+git commit --amend
+
+# GIT TAGS
+# THE IDEA BEHIND GIT TAGS
+# Tags are pointers that refer to particular points in Git 
+# history. We can mark a particular moment in time with a
+# tag. Tags are most often used to mark version releases in projects
+# Think of tags as branch references that do NOT CHANGE.
+# Once a tag is created, it always refets to the same commit.
+# It's just a label for a commit. 
+
+# THE TWO TYPES OF GIT TAGS
+# There are two types of Git tags we can use: lightweight and annotated tags
+# `lightweight tags` are .... lightweight. They are jsut a
+# name/label that points to a particular co,it.
+# `annotated tags` store extra meta data including the 
+# author's name and email, the date, and a tagging message
+# (like a commit message)
+
+# SEMANTIC VERSIONGING
+# The semantic versioning spec outlines a standardized
+# versioning system for software releases. It provides a 
+# consistent way for developers to give meanig to their
+# software releases (how big of a change is this release??)
+# Versions consist of three numbers separated by periods. 
+# 2.0.0
+# MAJOR.MINOR.PATCH 
+# MAJOR version when you make incompatible API changes
+# MINOR version when you add functionality in a backwards compatible manner, and
+# PATCH version when you make backwards compatible bug fixes. 
+
+# PATCH RELEASE, ex) 1.1
+# Patch releases normally do not contain new features of
+# significant changes. They typically signify bug fixes and
+# other changes that do not impact how the code is used 
+
+# Minor Release
+# Minor releases signify that new features or functionality have been added,
+# but the project is still backwards compatible.
+# No breaking changes. 
+# The new functionliaty is optional and should not force users to rewrite
+# their own code.
+
+# Major Release
+# Major releases signify significant changes that is no longer
+# backwards compatible. Features may be removed or changed substantilly.
+
+# Viewing & Searching Tags
+# VIEWING TAGS 
+# git tag will print a list of all tags in the current repository.
+# see all list of tags
+git tag 
+
+# VIEWING TAGS 
+# We can search for tags that match a particular pattern by
+# using `git tag -l` and then passing in a wildcard pattern.
+# For example, `git tag -l "*beta*" will print a list of tags that 
+# include "beta" in their name. 
+git tag -l "v17*" # all tag that starts with `v17*` 
+git tag -l "*beta*" # all tag with `beta` included
+
+# checkout with tag name
+git checkout 15.3.1 # detached head state 
+
+# git diff using tag
+git diff v17.0.0 v17.0.1 
+
+# Creating Lightweight Tags
+# To create a lightweight tag, use `git tag ${tagName}`
+# By default, Git will create the tag referring to the commit
+# that HEAD is referencing 
+
+# ADD TAG 
+git status
+git add README.md
+git commit -m "fix typo in README"
+git tag v17.0.2
+
+git log --oneline
+git add .
+git commit -m "some message"
+git tag v17.0.3 
+
+# Creating Annotaged Tags
+# Use `git tag -a` to create a new annotated tag. Git will
+# then open your default text editor and prompt you for
+# additional information.
+# Simlar to git commit, we can also use the `-m` option to
+# pass a message directly and forgo the opening of the text editor  
+
+# ANNOTATED TAG 
+git add .
+git commit -m "message"
+git tag -a v17.1.0
+git show v17.1.0
+
+# TAGGING PREVIOUS COMMITS
+# So far we've seen how to tag the commit that HEAD references.
+# We can also tag an older commit by providing
+# the commit hash: `git tag -a <tagname> <commit-hash>
+git log --oneline
+git tag a <TAG NAME> <COMMIT HASH> 
+
+# Force Tag 
+git tag <TAG NAME> <COMMIT HASH> -f 
+
+# Deleting Tag 
+git tag <TAG NAME>
+git tag -d <TAG NAME> 
+
+# PUSHING TAGS
+# Pushing Tags
+# By default, the `git push` command doesn't transfer tags to
+# remote servers. If you have a lot of tags that you want to 
+# push up at once, you can use the `--tags` options to the `git push` command.
+# This will transfer all of your tags to the remote server 
+# that are not already there  
+
+# ADD SINGLE VERSION TAG 
+git push origin v1.0.0
+git push origin <VERSION NAME>
+
+# ADD ALL TAG
+git push origin --tags 
+
+# GIT CONFIG
+git config user.name
+git config --local user.name "blabla"
+git config --local user.email "blabla@bla.com"
+
+# CHECK 2 COMMITS AGO 
+git diff HEAD~2
+
+# KEY-VALUE STROAGE, GIT 
+# Let's Try Hashing
+echo 'hello' | git hash-object --stdin
+# The `--stdin` option tells git hash-object to use the content from stdin
+# rather than a file. In our example, it will hash the world 'hello'
+
+# The echo command simply repeats whatever we tell it to repeat to the
+# terminal. We pipe the output of echo to `git hash-object`.
+
+# Rather than simply outputting the key that git would store our object
+# under, we can use the `-w` option to tell git to actually write the object to
+# the database
+# After runnging this command, check out the contents of `.git/objects/`
+# we can find results at .git/objects/ 
+echo 'hello' | git hash-object --stdin -w 
+
+# Now that we have data stored in our Git object database, we can try
+# retrieving it using the git cat-file command.
+# The `-p` option tells Git to pretty print the contents of the object bsed on
+# its type.
+git cat-file -p <object-hash>
+
+# git hash-object 
+git hash-object <file.txt>
+# store object
+git hash-object <file.txt> -w
+
+# input 
+git cat-file -p ${object-hash} > ${new content to be added}
+
+# Viewing Trees
+# Remember that `git cat-file` prints out git objects. In this example, the 
+# `master^{tree}` syntax specifies the tree object that is pointed to by the
+# tip of our master branch. 
+git cat-file -p master^{tree}
+
+git cat-file -t ${hash}
+git cat-file -p ${hash}
+
+# REFLOGS, show all the histories in detail (LOCAL ONLY)
+# reflogs
+# Git keeps a record of when the tips of branches and other
+# references were updated in the repo.
+# in .git/HEAD file, git keeps track of `Change` of HEAD, 
+# ex) whenever we change branch
+
+# We can view and update these
+# reference logs using the `git reflog` command.
+
+# LIMITATIONS OF REFLOGS, - ONLY LOCAL CHANGES RECORDED 
+# Git only keeps reflogs on your `local` activity.
+# They are not shared with collaborators.
+# Reflogs also expire.
+# Git celans out old entries after around 90 days,
+# though this can be configured. 
+git log --oneline 
+
+# GIT REFLOG
+# The git reflog command accepts subcommands `show`, `expires`, `delete`, and `exists`.
+# Show is the only commonly used variant, and it is the default subcommand.
+
+# `git reflog show` will show the log of a specific reference (it defaults to HEAD)
+# For example, to view the logs for the tip of the main branch
+# we could run `git reflog show main` 
+git reflog show HEAD
+git reflog 
+git reflog show ${BRANCH}
+
+# Add file with content
+echo "hahah" > haha.txt
+
+# Reflog References
+# We can access specific git refs is `name@{qualifier}`.
+# We can use this syntax to access specific ref pointers and can
+# pass them to other commands including checkout, reset, and merge. 
+git reflog show HEAD
+git reflog show HEAD@{10}
+
+git checkout HEAD@{2}
+git diff HEAD@{0} HEAD@{5}
+git diff HEAD@{0} HEAD@{2}
+
+# What is the difference between git log and Reflog?
+# The biggest difference between Git reflog vs log is that
+# the log is a public accounting of the repository's commit history
+# while the reflog is a private, workspace-specific accounting of 
+# the repo's local commits...
+# Use the git log command to view the log and use the git reflog command to view the reflog
+
+# WORK FLOW OF REBASE USING REFLOG
+git tag BACKUP #create backup 
+git tag -l 
+git reflog #find commits 
+git log HEAD@{47} # check if log is fine
+git reset --hard HEAD@{47}
+
+# TIME-BASED REFLOG
+# Every entry in the reference logs has a timestamp
+# associated with it. We can filter reflogs entries by
+# time/date by using ti,e qualifiers like:
+# 1.day.ago
+# 3.minutes.ago
+# yesterday
+# Fri, 12 Feb 2021 14:06:21 - 0800
+git reflog master@{one.week.ago}
+git checkout bugfix@{2.days.ago}
+git diff main@{0} main@{yesterday}
+
+git diff HEAD HEAD@{yesterday}
+git diff master master@{yesterday
+git reflog show HEAD@{2.days.ago}
+git reflog show HEAD@{two.days.ago}
+git reflog show HEAD@{one.minute.ago}
+
+# RREFLOGS RESCUE
+# We can sometimes use reflog
+# entries to access commits that seem lost and are not appearing in git log.
+git reflogs 
+git reset --hard master@{1}
+
+# Undoing A Rebase w/ Reflog - It's A Miracle!
+git rebase -i HEAD~4
+git reflog show ${branch}
+git reset --hard ${commit-hash}
+
+# Writing Custom Git Aliases
+# Global Config Files
+# Git lloks for the global config file at either ~/.gitconfig or ~/.config/git/config 
+# Any configuration variables that we change in the file will be applied
+# across all Git repos.
+# We can also alter configuration variables from the command line if preferred.
+ls .git 
+git config --global user.email 
+git config --global user.email "paigeshin1991@gmail.com"
+git config --global user.name 
+git config --global user.name "paige"
 ```
+
+---
+
+---
+
+### Git config file `.git/config`
+
+```
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+	ignorecase = true
+	precomposeunicode = true
+[remote "origin"]
+	url = https://github.com/paigeshin/DRDozy_SwiftUI.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+[branch "pay"]
+	remote = origin
+	merge = refs/heads/master
+# Custom 
+[color]
+	ui = true
+[color "branch"]
+	local = cyan bold 
+  current = yellow bold
+[color "diff"]
+	old = magenta bold
+  new = green bold 
+
+# Adding Aliases
+# We can easily set up Git aliases to make our Git experience a bit simpler and faster.
+#For example, we could define an alias “git ci” instead of having to type “git commit”
+# Or, we could define a custom “git lg” command that prints out a custom formatted commit log.
+[alias]
+		s = status               # git s => git status
+		l = log                  # git l => git l 
+		showmebranches = branch  # git showmebranches => git branch
+    cm = commit -m           # git cm => git commit -m 
+```
+
+---
+
+### Useful git Aliases
+
+- https://github.com/GitAlias/gitalias
+- [https://www.durdn.com/blog/2012/11/22/must-have-git-aliases-advanced-examples/](https://www.durdn.com/blog/2012/11/22/must-have-git-aliases-advanced-examples/)
+- [https://gist.github.com/mwhite/6887990](https://gist.github.com/mwhite/6887990)
+
+---
 
 ### Git Collaboration Workflows
 
@@ -805,8 +1226,20 @@ If I do want to share my work, I can make a pull request from my fork to the ori
 
 ---
 
-[Docs ](https://www.notion.so/Docs-73312ea1bbd44e37a3723ca4fe3d9426)
+### SSH Connection
 
 [github ssh connection](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 
 [github ssh connection guide in korea](https://www.lainyzine.com/ko/article/creating-ssh-key-for-github/)
+
+---
+
+### Git behind scene
+
+[Deep dive into ‘`.git`'](https://www.notion.so/Deep-dive-into-git-4ec24136757f4f84ace9c2503fe5eb42)
+
+---
+
+### Other Docs
+
+[Docs ](https://www.notion.so/Docs-73312ea1bbd44e37a3723ca4fe3d9426)
