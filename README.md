@@ -1,4 +1,4 @@
-### README**s**
+# README**s**
 
 **README**s ****are Markdown files, ending with the .md extension.
 
@@ -13,24 +13,32 @@ A README file is used to communicate important information about a repository in
 - Why it’s noteworthy
 - Who maintains the project
 
+---
+
 ### [README.md](http://README.md) markdown guide
 
 [https://markdown-it.github.io/](https://markdown-it.github.io/)
 
-### .gitignore
+---
+
+# .gitignore
 
 - **.DS_Store** will ignore files named .DS_Store
 - **folderName/** will ignore an entire directory
 - ***.log** will ignore any files with the .log extension
 - `#` , comment
 
-### Gists
+---
+
+# Gists
 
 [https://gist.github.com/](https://gist.github.com/)
 
 Github Gists are a simple way to share code snippets and useful fragments with others. Gists are much easier to create, but offer far fewer features than a typical Github repository. 
 
-### Github Pages
+---
+
+# Github Pages
 
 Githhub Pages is a hosting service for static webpages, so it does not support server-side code like Python, Ruby, or Node. Just HTML/CSS/JS! 
 
@@ -44,7 +52,9 @@ Githhub Pages is a hosting service for static webpages, so it does not support s
 
 ⇒ branch named `gh-pages` is convention 
 
-### Git Command
+---
+
+# Git Command
 
 ```bash
 # Show logs in one line 
@@ -1077,9 +1087,7 @@ git config --global user.name "paige"
 
 ---
 
----
-
-### Git config file `.git/config`
+# Git config file `.git/config`
 
 ```
 [core]
@@ -1121,7 +1129,7 @@ git config --global user.name "paige"
 
 ---
 
-### Useful git Aliases
+# Useful git Aliases
 
 - https://github.com/GitAlias/gitalias
 - [https://www.durdn.com/blog/2012/11/22/must-have-git-aliases-advanced-examples/](https://www.durdn.com/blog/2012/11/22/must-have-git-aliases-advanced-examples/)
@@ -1129,7 +1137,7 @@ git config --global user.name "paige"
 
 ---
 
-### Git Collaboration Workflows
+# Git Collaboration Workflows
 
 **Critical**
 
@@ -1226,7 +1234,7 @@ If I do want to share my work, I can make a pull request from my fork to the ori
 
 ---
 
-### SSH Connection
+# SSH Connection
 
 [github ssh connection](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 
@@ -1234,12 +1242,12 @@ If I do want to share my work, I can make a pull request from my fork to the ori
 
 ---
 
-### Git behind scene
+# Git behind scene
 
 [Deep dive into ‘`.git`'](https://www.notion.so/Deep-dive-into-git-4ec24136757f4f84ace9c2503fe5eb42)
 
 ---
 
-### Other Docs
+# Other Docs
 
 [Docs ](https://www.notion.so/Docs-73312ea1bbd44e37a3723ca4fe3d9426)
